@@ -1,26 +1,266 @@
+/* Move the Google Fonts import to LINE 1 */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Almarai:wght@300;400;700;800&display=swap');
+
+/* Move Tailwind to LINE 2 */
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0b1220;
+
+  --panel: #f8fafc;
+  --panel-2: #ffffff;
+  --panel-3: #eef2f7;
+
+  --line: #e2e8f0;
+  --line-2: #cbd5e1;
+
+  --text-primary: #0b1220;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+
+  --accent: #0284c7;
+  --accent-soft: rgba(2, 132, 199, 0.12);
+
+  --hover-bg: #f1f5f9;
+  --input-bg: #ffffff;
 }
 
+/* System dark preference (used only before JS sets data-theme) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #061024;
+    --foreground: #e6eef8;
+    --panel: #071428;
+    --panel-2: #0a1a36;
+    --panel-3: #081830;
+    --line: #16294a;
+    --line-2: #1e3355;
+    --text-primary: #e6eef8;
+    --text-secondary: #b8c6db;
+    --text-muted: #8296b3;
+    --accent: #0ea5e9;
+    --accent-soft: rgba(14, 165, 233, 0.15);
+    --hover-bg: rgba(148, 163, 184, 0.1);
+    --input-bg: #0a1a36;
+  }
+}
+
+/* Explicit theme: LIGHT */
+html[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #0b1220;
+  --panel: #f8fafc;
+  --panel-2: #ffffff;
+  --panel-3: #eef2f7;
+  --line: #e2e8f0;
+  --line-2: #cbd5e1;
+  --text-primary: #0b1220;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --accent: #0284c7;
+  --accent-soft: rgba(2, 132, 199, 0.12);
+  --hover-bg: #f1f5f9;
+  --input-bg: #ffffff;
+}
+
+/* Explicit theme: DARK (navy) */
+html[data-theme="navy"] {
+  --background: #061024; /* deep navy */
+  --foreground: #e6eef8;
+  --panel: #071428;
+  --panel-2: #0a1a36;
+  --panel-3: #081830;
+  --line: #16294a;
+  --line-2: #1e3355;
+  --text-primary: #e6eef8;
+  --text-secondary: #b8c6db;
+  --text-muted: #8296b3;
+  --accent: #0ea5e9;
+  --accent-soft: rgba(14, 165, 233, 0.15);
+  --hover-bg: rgba(148, 163, 184, 0.1);
+  --input-bg: #0a1a36;
+}
+
+/* Map semantic colors to Tailwind utility classes (inline keeps the var ref) */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-panel-3: var(--panel-3);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-hover-bg: var(--hover-bg);
+  --color-input-bg: var(--input-bg);
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
+
+/* use Almarai for Arabic dashboard when dir=rtl */
+[dir="rtl"] body, [dir="rtl"] aside {
+  font-family: 'Almarai', 'Cairo', 'Noto Naskh Arabic', Tahoma, Arial, sans-serif;
+}
+
+/* RTL support helper */
+html[dir="rtl"] {
+  direction: rtl;
+}
+
+/* ensure map container and main layout adapt to RTL when needed */
+[dir="rtl"] .dashboard-layout {
+  direction: rtl;
+}
+
+/* custom scrollbar for dashboard and overflow-auto areas */
+aside, .overflow-auto {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(148,163,184,0.35) transparent;
+}
+
+/* WebKit-based browsers */
+aside::-webkit-scrollbar, .overflow-auto::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+aside::-webkit-scrollbar-track, .overflow-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+aside::-webkit-scrollbar-thumb, .overflow-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(148,163,184,0.35);
+  border-radius: 9999px;
+  border: 2px solid transparent; /* padding look */
+  background-clip: padding-box;
+}
+aside::-webkit-scrollbar-thumb:hover, .overflow-auto::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(148,163,184,0.6);
+}
+
+/* ===== Leaflet control / popup theming (follows data-theme) ===== */
+html .leaflet-container {
+  background: var(--background);
+  font-family: inherit;
+}
+html .leaflet-control-zoom a {
+  background-color: var(--panel-2);
+  color: var(--text-primary);
+  border-color: var(--line);
+}
+html .leaflet-control-zoom a:hover {
+  background-color: var(--hover-bg);
+}
+html .leaflet-bar a.leaflet-disabled {
+  background-color: var(--panel-3);
+  color: var(--text-muted);
+}
+html .leaflet-control-layers {
+  background-color: var(--panel-2);
+  color: var(--text-primary);
+  border-color: var(--line);
+  border-radius: 8px;
+}
+html .leaflet-control-layers-expanded {
+  background-color: var(--panel-2);
+}
+html .leaflet-control-layers label {
+  color: var(--text-primary);
+}
+html .leaflet-popup-content-wrapper,
+html .leaflet-popup-tip {
+  background: var(--panel-2);
+  color: var(--text-primary);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+html .leaflet-popup-content-wrapper {
+  border: 1px solid var(--line);
+}
+html .leaflet-popup-content-wrapper a {
+  color: var(--accent);
+}
+html .leaflet-control-attribution {
+  background: var(--panel-2);
+  color: var(--text-muted);
+}
+html .leaflet-control-attribution a {
+  color: var(--accent);
+}
+
+/* ===== Leaflet tooltips (hover/click info shown above house markers) ===== */
+html .leaflet-tooltip {
+  background: var(--panel-2);
+  color: var(--text-primary);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  padding: 6px 10px;
+}
+html .leaflet-tooltip-top:before,
+html .leaflet-tooltip-bottom:before {
+  border-top-color: var(--line);
+  border-bottom-color: var(--line);
+}
+
+/* ===== Form controls follow the theme too ===== */
+input[type="number"],
+input[type="text"],
+input[type="range"],
+input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/* ===== Emoji map icons (Leaflet divIcon) ===== */
+.leaflet-marker-icon.gis-icon {
+  background: transparent;
+  border: none;
+}
+.leaflet-marker-icon.gis-icon .emoji-glyph {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+/* ===== MapLibre 3D markers ===== */
+.gis3d-marker {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  pointer-events: auto !important;
+  line-height: 1 !important;
+  z-index: 9999 !important;
+}
+
+.maplibregl-marker {
+  z-index: 9999 !important;
+}
+
+.maplibregl-canvas-container {
+  z-index: 1 !important;
+}
+
+/* ===== MapLibre controls follow the theme ===== */
+.maplibregl-ctrl-group,
+.maplibregl-ctrl-attrib {
+  background-color: var(--panel-2) !important;
+  color: var(--text-primary);
+}
+.maplibregl-ctrl-attrib a {
+  color: var(--accent);
+}
+
